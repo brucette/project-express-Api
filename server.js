@@ -15,9 +15,8 @@ app.use(express.json());
 
 // Route for start page
 app.get('/', (req, res) => {
-
-  // Start page:
-  res.send("Welcome to ReadIt! - See this API live at: https://xxxxxxxx.netlify.app/")
+  
+  res.json(listEndpoints(app));
 });
 
 // Function for pagination:
