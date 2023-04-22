@@ -15,14 +15,12 @@ app.use(express.json());
 
 // Route for start page
 app.get('/', (req, res) => {
-  // For now, start page lists the two routes available:
-  res.json(listEndpoints(app));
 
-  // Start page for once the frontend is ready:
-  //res.send("Welcome to ReadIt! - See this API live at: https://xxxxxxxx.netlify.app/")
+  // Start page:
+  res.send("Welcome to ReadIt! - See this API live at: https://xxxxxxxx.netlify.app/")
 });
 
-// Function for pagination, to be used later:
+// Function for pagination:
 const pagination = (data, pageNumber) => {
   const pageSize = 15
   const startIndex = (pageNumber-1) * pageSize
@@ -61,11 +59,21 @@ app.get('/books', (req, res) => {
   // for top-rated books: e.g. /books?top=true
   if (top) {
     allBooks = allBooks.filter((book) => 
-      book.average_rating > '4.3')
+      book.average_rating > '4.6')
   } 
   if (allBooks.length === 0) {
-		res.status(404).json("Sorry we couldn't find any match for your search")
-	} else res.status(200).json({ booksData: allBooks })
+		res.status(404).json({
+      success: false,
+      message: "Sorry, we couldn't find any match for your search.",
+      body: {}
+    })
+	} else res.status(200).json({ 
+      success: true,
+      message: "OK",
+      body: {
+        booksData: allBooks 
+    }
+  })
 });
 
 // Route for a single book based on id 
@@ -75,8 +83,20 @@ app.get("/books/:id", (req, res) => {
     return book.bookID === +id})
 
   if (!singleBook) {
-    res.status(404).json("Sorry we couldn't find a book with that id")
-	} else res.status(200).json({ book: singleBook }) 
+    res.status(404).json({
+      success: false,
+      message: "Sorry, we couldn't find a book with that id.",
+      body: {}
+    })
+	} else {
+      res.status(200).json({ 
+        success: true,
+        message: "OK",
+        body: {
+          book: singleBook
+        } 
+      }) 
+    }
 })
 
 // Start the server
