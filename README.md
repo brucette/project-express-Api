@@ -1,4 +1,4 @@
-1# Project Express API
+1# Project Express API.
 
 The aim of this project is to create an API with RESTful endpoints returning either an array of data or a single item.
 
